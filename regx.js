@@ -4,11 +4,6 @@
 //regx.email({check:val,identifier:{has:[],include:{elements:[],optional:true},exclude:{elements:[],optional:true}},domain:{name:'gmail'},tld:{type:['com','co']}}); regx.email(value)
 //regx.replace({check:'',having:{custom:''}});
 
-//^([A-Za-z+*\s][^%\s])*$ for text
-//^[+-]?(?=.)[$]?(?:\d+,)*\d*(?:\.\d+)?$ for number
-//^([0-9a-fA-F][0-9a-fA-F]:){5}([0-9a-fA-F][0-9a-fA-F])$ for MAC address
-//^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$ for email
-
 
 
 (function(window, document, undefined) {
