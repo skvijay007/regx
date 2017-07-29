@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+	<head>
+		<meta charset="UTF-8">
+		<script src="regx.js"></script>
+		<script>
+			function test(){
+				var val = document.getElementById('testtext').value;
+				//var inputVal = regx.text({check:val,include:['+','*'],exclude:'%',case:'ignore',whitespace:false});
+				//var inputVal = regx.number({check:val, startingdecimal:true, integer:{length:{max:3,min:0}},decimals:{length:{max:2,min:1},optional:true},sign:{show:true,optional:true},currency:{sign:'$',optional:true},brackets:{show:true,optional:true}});
+				//var inputVal = regx.email(val);
+				//var inputVal = regx.email({check:val,identifier:{has:['vijay','test','raj','1234'],include:{elements:['$','&'],optional:true},exclude:{elements:['*',')'],optional:true}},domain:{name:['gmail','test','google'],digits:{optional:true}},tld:{type:['com','co','club']}});
+				//var inputVal = regx.mac(val);
+				//var inputVal = regx.mac({check:val,delimiter:['-',':']});
+				var divVal = document.getElementById('lorem').innerHTML;
+				//var inputVal = regx.replace({check:divVal,having:['@@','^a']});
+				var inputVal = regx.replace({check:divVal,having:{custom:'+vijay and-) are'}});
+				document.getElementById('output').innerHTML = inputVal;
+			}
+		</script>
+	</head>
+	<body>
+		<input type="text" id="testtext" name="testtext" />
+		<button onclick="test()">check</button>
+		<p id="output"></p>
+		<div id="lorem">
+			Lorem ipsum dolor sit amet, consectetur adipiscing elit. Etiam vestibulum interdum odio eu molestie. Cras lobortis, arcu ut ullamcorper ullamcorper, massa ex porttitor augue, nec aliquam ipsum justo et ligula. Mauris sodales dolor at sodales hendrerit. Ut volutpat, ligula molestie sodales scelerisque, tellus ligula volutpat nisl, viverra suscipit est felis eu nunc. Sed finibus rhoncus lorem, vitae rhoncus felis viverra a. Vivamus porta consectetur bibendum. Donec finibus quam eget turpis fringilla molestie. Proin id iaculis ex, vitae posuere elit. Pellentesque ac lobortis eros, id elementum nibh. Nulla orci lacus, semper a iaculis sed, consequat et tellus. Mauris nec ex et dolor efficitur faucibus sit amet vitae est. Suspendisse luctus magna eu sem sagittis, eget congue justo gravida. Aenean vehicula mauris dui, in laoreet leo accumsan at.			
+		</div>
+	</body>
+</html>
