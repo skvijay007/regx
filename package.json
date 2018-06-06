@@ -1,0 +1,19 @@
+{
+  "name": "regx",
+  "version": "1.0.0",
+  "description": "package to change the regx expressions during runtime",
+  "main": "regx.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/skvijay007/regx.git"
+  },
+  "author": "vijendra kumar",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/skvijay007/regx/issues"
+  },
+  "homepage": "https://github.com/skvijay007/regx#readme"
+}
