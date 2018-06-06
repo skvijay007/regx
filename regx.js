@@ -1,11 +1,3 @@
-//regx.text({check:val,include:['+','*'],exclude:'%',case:'ignore',whitespace:false}); regx.text(val);
-//regx.number({check:val,startingdecimal:true, integer:{length:3},decimals:{length:2,optional:true},sign:{show:true,optional:true},currency:{sign:'$',optional:true},brackets:{show:true,optional:true}}); regx.number(val);
-//regx.mac({check:val,delimiter:[]}); regx.mac(value)
-//regx.email({check:val,identifier:{has:[],include:{elements:[],optional:true},exclude:{elements:[],optional:true}},domain:{name:'gmail'},tld:{type:['com','co']}}); regx.email(value)
-
-
-
-
 (function(window, document, undefined) {
     'use strict';
 
@@ -59,8 +51,8 @@
 		MAC_REGEX : /^([0-9a-fA-F][0-9a-fA-F][:-]){5}([0-9a-fA-F][0-9a-fA-F])$/,
 		EMAIL_REGEX: /^[a-z0-9._%+-]+@[a-z0-9.-]+\.[a-z]{2,3}$/
     };
-	
-	
+
+
 	//To replace the specific items in given string
 	//@@ - SPECIAL CHARACTERS
 	//## - NUMBERS
@@ -74,26 +66,26 @@
 		var regpat = "";
 		var having = value.having;
 		var check = value.check;
-	
+
 		if(value=='undefined' || !value){
 			console.log('Error : Empty values to replace');
 			return;
 		}
-	
+
 		if(!having || having == null || having == ""){
 			console.log('Error :  missing replace literals HAVING');
 			return;
 		}
-		
+
 		if(!check || check == null || check == ""){
 			console.log('Error : missing replacing literals CHECK');
 			return;
 		}
-		
+
 		if(Array.isArray(having)){
 			having.forEach(function(item,index,having){
 				buildReg(item);
-			});		
+			});
 		} else if(typeof having==='object'){
 			if(having.hasOwnProperty('custom')){
 				if(typeof having.custom ==='string'){
@@ -103,8 +95,8 @@
 						if(!custItem.match(/\s/g)){
 							havCustom = havCustom.replace(custItem,Config.BACKSLASH + custItem);
 						}
-					});	
-					regpat += havCustom;	
+					});
+					regpat += havCustom;
 				}else{
 					console.log('Error: Invalid CUSTOM string');
 					return
@@ -116,9 +108,9 @@
 		}else{
 			regpat += having;
 		}
-		
+
 		console.log(regpat);
-		
+
 		function buildReg(item){
 			switch(item) {
 				case '@@':
@@ -137,25 +129,25 @@
 					regpat += Config.IGNORE_CASE_CHAR_RANGE;
 					break;
 				case 'A9':
-				case '9A':				
+				case '9A':
 					regpat += Config.UP_CHAR_RANGE + Config.DIGIT_RANGE;
-					break;		
+					break;
 				case 'a9':
-				case '9a':				
+				case '9a':
 					regpat += Config.LOW_CHAR_RANGE + Config.DIGIT_RANGE;
-					break;		
+					break;
 				case 'aA9':
-				case 'Aa9':				
-				case '9Aa':								
-				case '9aA':												
-				case 'a9A':																
-				case 'A9a':																				
+				case 'Aa9':
+				case '9Aa':
+				case '9aA':
+				case 'a9A':
+				case 'A9a':
 					regpat += Config.IGNORE_CASE_CHAR_RANGE + Config.DIGIT_RANGE;
-					break;						
-			}	
+					break;
+			}
 		}
-		
-		
+
+
 	}
 
 	//To Check Number Input
@@ -169,7 +161,7 @@
 			var signObj = checkproperty(value,'sign');
 			var currencyObj = checkproperty(value,'currency');
 			var bracketsObj = checkproperty(value,'brackets');
-			
+
             if (value.hasOwnProperty('check')) {
                 checkVal = value.check;
             } else {
@@ -180,14 +172,14 @@
             if (checkVal == "" || checkVal == null) {
                 console.log('missing string for validation..');
                 return;
-            }			
-	
+            }
+
 		} else {
 
             return Config.NUM_REGEX.test(checkVal);
 
         }
-		
+
 		if(signObj.hasOwnProperty('show')){
 			if(signObj['show']==true){
 				regpat = literalStarting(Config.DIGIT_SIGN,'set');
@@ -196,7 +188,7 @@
 				regpat = addOptional(regpat);
 			}
 		}
-		
+
 		if(currencyObj.hasOwnProperty('sign')){
 			if(currencyObj['sign']!=="" || currencyObj['sign']!==null){
 				regpat += createset(Config.BACKSLASH.concat(currencyObj['sign']));
@@ -205,19 +197,19 @@
 				regpat = addOptional(regpat);
 			}
 		}
-		
+
 		if(value.hasOwnProperty('startingdecimal')){
 			if(value['startingdecimal']==true){
 				regpat += creategroup(Config.POSITIVE_LOOK_AHEAD.concat(Config.DOT))
 			}
 		}
-		
+
 		if(value.hasOwnProperty('comma')){
 			if(value['comma']==true){
 				regpat += creategroup(Config.COMMA.concat(Config.ZERO_PLUS_PREC,Config.DIGIT));
 			}
-		}		
-		
+		}
+
 		if(integerObj.hasOwnProperty('length')){
 			if(integerObj['length']!==''){
 				regpat += Config.DIGIT + createquantifier(integerObj['length']);
@@ -225,31 +217,31 @@
 			else
 			{
 				regpat += Config.MULTI_CHAR.concat(Config.DIGIT,Config.MULTI_CHAR);
-			}		
+			}
 		}else{
 			regpat += Config.MULTI_CHAR.concat(Config.DIGIT,Config.MULTI_CHAR);
 		}
-		
+
 		if(decimalObj)
-		{	
+		{
 			var decQuant = decimalObj['length']?createquantifier(decimalObj['length']):Config.ONE_PLUS_PREC;
 			regpat += creategroup(Config.NON_CAPTURE_GROUP.concat(Config.BACKSLASH,Config.DOT,Config.DIGIT,decQuant));
 			if(decimalObj['optional']==true){
 				regpat = addOptional(regpat);
 			}
 		}
-		
+
 		regpat += Config.STRING_END;
-		
+
 		regpat = new RegExp(regpat);
-		
+
 		console.log(regpat);
-		
+
 		return regpat.test(checkVal);
-		
-		
+
+
 	}
-	
+
 	//To Check Text/String Input
 	//Returns true if matches
     function text(value) {
@@ -303,9 +295,9 @@
 
         }
 
-    }	
-	
-	//To Check MAC Address	
+    }
+
+	//To Check MAC Address
 	function mac(value){
 		var regpat = "";
 		var customRegEx;
@@ -317,23 +309,23 @@
 			}
 			var delimiter = value.delimiter;
 			var delimiterArr = returnArrayType(value.delimiter);
-			var buildIncReg = buildRegPattern(delimiterArr, "include");				
+			var buildIncReg = buildRegPattern(delimiterArr, "include");
 			regpat = Config.ALPHA_DIGIT_SET + Config.ALPHA_DIGIT_SET + createset(buildIncReg);
 			regpat = literalStarting(regpat,'group')+Config.QUANT_ENCLOSURE.split('').join(5);
 			regpat += creategroup(Config.ALPHA_DIGIT_SET + Config.ALPHA_DIGIT_SET) + Config.STRING_END;
             customRegEx = new RegExp(regpat);
-            return customRegEx.test(checkVal);			
-				
+            return customRegEx.test(checkVal);
+
 		}else{
 			if (value == "" || value == null) {
 				console.log('missing string for validation..');
 				return;
 			}else{
-				return Config.MAC_REGEX.test(value);			
-			}		
+				return Config.MAC_REGEX.test(value);
+			}
 		}
 	}
-	
+
 	//To check Email Input
 	//Return true if matches
 	function email(value){
@@ -344,12 +336,12 @@
 			var identifier = checkproperty(value,'identifier');
 			var domain = checkproperty(value,'domain');
 			var tld = checkproperty(value,'tld');
-			
+
 			if (checkVal == "" || checkVal == null) {
 				console.log('missing string for validation..');
 				return;
 			}
-			
+
 			if(identifier.has.length > 0 ){
 				//regpat = Config.GROUP_START_REGEX;
 				for (var i=0 ; i < identifier.has.length ; i++){
@@ -359,12 +351,12 @@
 			}else{
 				regpat = literalStarting(Config.IGNORE_CASE_CHAR_RANGE.concat(Config.DIGIT_RANGE,"._%+-"),"set").concat(Config.ONE_PLUS_PREC);
 			}
-			
+
 			regpat += constructCustom(identifier.include,'include');
 			regpat += constructCustom(identifier.exclude,'exclude');
 			regpat = literalStarting(regpat,"group") + Config.SYMBOL_AT;
-			
-			
+
+
 			if(domain && domain!==''){
 				if (Array.isArray(domain.name)){
 					if(domain.name.length > 0 ){
@@ -372,23 +364,23 @@
 						for (var i=0 ; i < domain.name.length ; i++){
 							regpat += Config.GROUP_START_REGEX + domain.name[i] + Config.GROUP_END_REGEX + Config.ALTER;
 						}
-						regpat += Config.GROUP_END_REGEX;						
+						regpat += Config.GROUP_END_REGEX;
 						if(domain.digits.optional == true){
 							regpat += addOptional(createset(Config.DIGIT_RANGE));
-						}						
+						}
 					}else{
 						regpat += createset(Config.IGNORE_CASE_CHAR_RANGE.concat(Config.DIGIT_RANGE)) + '.-' + Config.ONE_PLUS_PREC;
-					}					
+					}
 				}else{
 					regpat += createset(Config.IGNORE_CASE_CHAR_RANGE.concat(Config.DIGIT_RANGE)) + '.-' + Config.ONE_PLUS_PREC;
 				}
 			}else{
 				regpat += createset(Config.IGNORE_CASE_CHAR_RANGE.concat(Config.DIGIT_RANGE,'.-')) + Config.ONE_PLUS_PREC;
 			}
-			
+
 			regpat += Config.BACKSLASH + Config.DOT;
 			console.log(regpat);
-			
+
 			if(tld && tld !== ''){
 				console.log(tld);
 				if (Array.isArray(tld.type)){
@@ -396,36 +388,36 @@
 						regpat += Config.GROUP_START_REGEX;
 						for (var j=0 ; j < tld.type.length ; j++){
 							regpat += Config.GROUP_START_REGEX + tld.type[j] + Config.GROUP_END_REGEX + Config.ALTER;
-						}						
+						}
 						regpat += Config.GROUP_END_REGEX;
 					}else{
 						regpat += createset(Config.IGNORE_CASE_CHAR_RANGE) + createquantifier({min:2,max:3});
 					}
 				}
-			
+
 			}
-			
+
 			regpat += Config.STRING_END;
-			
+
 			console.log(regpat);
 
             customRegEx = new RegExp(regpat);
 
             console.log(customRegEx);
 
-            return customRegEx.test(checkVal);			
-				
+            return customRegEx.test(checkVal);
+
 		}else{
 			if (value == "" || value == null) {
 				console.log('missing string for validation..');
 				return;
 			}else{
-				return Config.EMAIL_REGEX.test(value);			
-			}		
-		}		
+				return Config.EMAIL_REGEX.test(value);
+			}
+		}
 	}
-	
-	
+
+
 	//Construct Include and Exclude objects
 	function constructCustom(value,type){
 		if(type=='include'){
@@ -438,7 +430,7 @@
 					}else{
 						return createset(buildIncReg);
 					}
-				}				
+				}
             }
 		}
 		if(type=='exclude'){
@@ -452,22 +444,22 @@
 						return createset(buildExcReg,"neg");
 					}
 				}
-            }		
+            }
 		}
 	}
 
 	//Consider Group or Set for initial check notation (^)
 	function literalStarting(pattern,type){
-		
+
 		if(type=='set'){
 			return Config.NEGATE + createset(pattern);
 		}
 		if(type=='group'){
 			return Config.NEGATE + creategroup(pattern);
 		}
-		
+
 	}
-	
+
 	//Adding optional notation (?)
 	function addOptional(pattern){
 		return pattern + Config.OPTIONAL;
@@ -479,36 +471,36 @@
 	function creategroup(pattern,type){
 		if(type=="neg")
 		{
-			return Config.GROUP_START_REGEX.concat(Config.NEGATE, pattern, Config.GROUP_END_REGEX); 
+			return Config.GROUP_START_REGEX.concat(Config.NEGATE, pattern, Config.GROUP_END_REGEX);
 		}else{
-			return Config.GROUP_START_REGEX.concat(pattern, Config.GROUP_END_REGEX); 
+			return Config.GROUP_START_REGEX.concat(pattern, Config.GROUP_END_REGEX);
 		}
-		
+
 	}
 
 
 	//To Create Set
 	//Pattern - Pattern to insert in group
-	//type - Negated (neg)	
+	//type - Negated (neg)
 	function createset(pattern,type){
-	
+
 		if(type=="neg")
 		{
-			return Config.SET_BEGIN.concat(Config.NEGATE, pattern, Config.SET_END); 
+			return Config.SET_BEGIN.concat(Config.NEGATE, pattern, Config.SET_END);
 		}else{
-			return Config.SET_BEGIN.concat(pattern, Config.SET_END); 
+			return Config.SET_BEGIN.concat(pattern, Config.SET_END);
 		}
-		
-	}	
+
+	}
 
 	//To Create Quantifier
-	//Pattern - Pattern to insert in Quantifier	
+	//Pattern - Pattern to insert in Quantifier
 	function createquantifier(pattern){
-	
-		return Config.QUANT_BEGIN.concat(pattern.min, ",", pattern.max, Config.QUANT_END); 
-		
-	}	
-	
+
+		return Config.QUANT_BEGIN.concat(pattern.min, ",", pattern.max, Config.QUANT_END);
+
+	}
+
 
 	//To fetch and return property values
 	function checkproperty(value,prop){
@@ -518,7 +510,7 @@
 			return;
 		}
 	}
-	
+
 
 	//To Check Whitespace property and include/exclude in Input
     function checkWhitespace(item, scope) {
